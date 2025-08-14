@@ -25,6 +25,12 @@ const (
 	errTrackUsage           = "cannot track ProviderConfig usage"
 	errExtractCredentials   = "cannot extract credentials"
 	errUnmarshalCredentials = "cannot unmarshal anypoint credentials as JSON"
+	keyUsername = "username"
+	keyPassword = "password"
+	keyClientId = "client_id"
+	keyClientSecret = "client_secret"
+	keyAccessToken = "access_token"
+	keyCPlane = "cplane"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -61,12 +67,25 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		if err := json.Unmarshal(data, &creds); err != nil {
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
-
-		// Set credentials in Terraform provider configuration.
-		/*ps.Configuration = map[string]any{
-			"username": creds["username"],
-			"password": creds["password"],
-		}*/
+        ps.Configuration = map[string]any{}
+        if v, ok := creds[keyUsername]; ok {
+            ps.Configuration[keyUsername] = v
+        }
+        if v, ok := creds[keyPassword]; ok {
+            ps.Configuration[keyPassword] = v
+        }
+        if v, ok := creds[keyClientId]; ok {
+            ps.Configuration[keyClientId] = v
+        }
+        if v, ok := creds[keyClientSecret]; ok {
+            ps.Configuration[keyClientSecret] = v
+        }
+        if v, ok := creds[keyAccessToken]; ok {
+            ps.Configuration[keyAccessToken] = v
+        }
+        if v, ok := creds[keyCPlane]; ok {
+            ps.Configuration[keyCPlane] = v
+        }
 		return ps, nil
 	}
 }
