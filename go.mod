@@ -1,4 +1,4 @@
-module github.com/upbound/upjet-provider-template
+module github.com/basb2801/provider-anypoint
 
 go 1.21
 
